@@ -26,17 +26,15 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         String password = requestBody.get("password");
-        User user = new User("John Doe", "john.doe@example.com", "password123");
-        if (user.login(email, password)) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("message", "Login successful");
-            return ResponseEntity.ok(response);
-        } else {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "Invalid email or password");
-            return ResponseEntity.status(401).body(response);
-        }
+
+        // validasi dengan data yang sudah ada
+        for (User existingUser : dataUser) {
+            if (existingUser.login(email, password)) {
+                Map<String, Object> response = new HashMap<>();
+                response.put("success", true);
+                response.put("message", "Login successful");
+                return ResponseEntity.ok(response);
+            }
+        }   
     }
 }
